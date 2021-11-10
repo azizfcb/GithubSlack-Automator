@@ -18,7 +18,7 @@ async function main() {
   utilities.validateInputParams(params);
   utilities.validateConfigJsonParamsAndAPITokens(config, process.env);
   const githubUsername = params.ghuser;
-  const { slackEmail } = params.slackemail;
+  const slackEmail = params.slackemail;
   const { githubOrganization } = config;
   const githubTemplate = config.githubTemplateName;
   const slackTeamId = config.slackTeam;
@@ -35,7 +35,7 @@ async function main() {
     // await slackHelper.createPrivateConversationAndInviteGUestUSer(githubUsername, slackEmail, slackTeamId, slackUsersList, slackAPiToken);
     console.log('Process Finished.')
   } catch (err) {
-    console.log(err);
+    console.log('Error: ' + err);
     process.exit();
   }
 }

@@ -17,11 +17,11 @@ const Utilities = {
   validateInputParams(params) {
     // validate input params
     if (!params.ghuser) {
-      console.log('--ghuser is required. try <node index.js --help> for complete required parameters!');
+      console.log('--ghuser is required. try <node automator.js --help> for complete required parameters!');
       process.exit(1);
     }
     if (!params.slackemail) {
-      console.log('--slackemail is required. try <node index.js --help> for complete required parameters!');
+      console.log('--slackemail is required. try <node automator.js --help> for complete required parameters!');
       process.exit(1);
     }
     // validate valid email

@@ -22,14 +22,16 @@ const GithubHelper = {
     try {
       const response = await fetch(url, options);
       const json = await response.json();
-      if(json.message === 'Not Found' || json.login !== githubUsername) {
+      if (json.message) {
+        throw json.message;
+      }
+      if(json.login !== githubUsername) {
         console.log(json)
-        throw new Error('[KO] Either Github account ['+ githubUsername +'] does not exist!');
+        throw 'Github account ['+ githubUsername +'] does not exist!';
       }
       console.log('[OK] Github account ['+githubUsername+'] exists');
     } catch (error) {
-      console.log(error);
-      throw error;
+      throw 'Github : ' + error;
     }
   },
   // async function to check if the template repository exist
@@ -45,13 +47,15 @@ const GithubHelper = {
     try {
       const response = await fetch(url, options);
       const json = await response.json();
+      if (json.message.includes('Bad credentials')) {
+        throw json.message;
+      }
       if (json.is_template === undefined || !json.is_template) {
-        throw new Error(`[KO] Either Template repository [${githubTemplate}] doesn't exist on organization [${githubOrganization}] or is not template is not defined as a template`);
+        throw `Either Template repository [${githubTemplate}] doesn't exist on organization [${githubOrganization}], is not template is not defined as a template or organization [${githubOrganization}] doesn't exist`;
       }
       console.log(`[OK] Template repository [${githubTemplate}] exists on organization [${githubOrganization}]`);
     } catch (error) {
-      console.log(error);
-      throw error;
+      throw 'Github : ' + error;
     }
   },
   // async function to create github repository in organisation based on template
@@ -86,8 +90,7 @@ const GithubHelper = {
         throw json.error.reduce((acc, cur) => `${acc}\n${cur}`, '');
       }
     } catch (error) {
-      console.log(error);
-      throw error;
+      throw 'Github : ' + error;
     }
   },
 
@@ -111,13 +114,11 @@ const GithubHelper = {
       }
       if (response.status === 204) {
         console.log(`2/5 [OK] : Collaborator [${githubUsername}] is already a collaborator on repository [${repoName}] on organization [${githubOrganization}] => continuing`);
-        return;
       }
       const json = await response.json();
       throw json.message;
     } catch (error) {
-      console.log(error);
-      throw error;
+      throw 'Github : ' + error;
     }
   },
 };

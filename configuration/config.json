@@ -1,7 +1,7 @@
 {
   "githubOrganization": "test-upwork",
-  "githubTemplateName": "azitips",
-  "slackTeam": "",
+  "githubTemplateName": "welcome",
+  "slackTeam": "test-slack-team",
   "slackUsersList": [
     "azzaz@gmail.com",
     "bzzbz@gmail.com"
