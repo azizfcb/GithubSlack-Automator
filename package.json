@@ -1,0 +1,28 @@
+{
+  "name": "github-slack-automator",
+  "version": "1.0.0",
+  "description": "",
+  "main": "automator.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "fetch-retry": "^4.1.1",
+    "node-fetch": "^2.6.1"
+  },
+  "engines": {
+    "node": "12.x"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.0",
+    "@babel/eslint-parser": "^7.15.0",
+    "@babel/preset-env": "^7.15.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.24.1"
+  }
+}
