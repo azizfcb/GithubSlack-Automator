@@ -11,7 +11,7 @@ const SlackHelper = {
         if (users.userIds.length === 0) {
             console.log('No users found from the provided ' + slackUsersList + ' list');
         } else {
-            await this.addSlackUsersToConversation(channelId, channelName, users.foundUsernames, users.userIds, slackAPiToken);
+            await this.addSlackUsersToConversation(channelId, channelName, users.foundEmails, users.userIds, slackAPiToken);
         }
         await this.inviteGuestUserToSlackConversation(channelName, slackTeamId, channelId, slackEmail, slackAPiToken);
     },
@@ -150,8 +150,8 @@ const SlackHelper = {
         console.log(`   ===> Invited guest user [${slackEmail}] to slack conversation [${channelName}]`);
     },
     // function to search for user slack email and returns array of ids
-    async searchSlackUsersIds(slackUsernames, slackAPiToken) {
-        console.log(`4/6 : Fetching users ids from usernames [${slackUsernames}] ...`);
+    async searchSlackUsersIds(slackEmails, slackAPiToken) {
+        console.log(`4/6 : Fetching users ids from emails [${slackEmails}] ...`);
         const options = {
             url: 'https://slack.com/api/users.list',
             headers: {
@@ -175,27 +175,27 @@ const SlackHelper = {
             }
             const users = json.members;
             const userIds = [];
-            const foundUsernames = [];
+            const foundEmails = [];
             users.forEach((user) => {
-                if (slackUsernames.includes(user.name)) {
+                if (slackEmails.includes(user.profile.email)) {
                     userIds.push(user.id);
-                    foundUsernames.push(user.name);
+                    foundEmails.push(user.profile.email);
                 }
             });
-            if (foundUsernames.length !== slackUsernames.length) {
-                console.log(`   ===> Not found ${slackUsernames.length - foundUsernames.length} user(s) in slack: [${slackUsernames.filter(username => !foundUsernames.includes(username))}]`);
+            if (foundEmails.length !== slackEmails.length) {
+                console.log(`   ===> Not found ${slackEmails.length - foundEmails.length} user(s) in slack: [${slackEmails.filter(email => !foundEmails.includes(email))}]`);
             }
-            if (foundUsernames.length) {
-                console.log(`   ===> Found ${foundUsernames.length} user(s) in slack: [${foundUsernames}]`);
+            if (foundEmails.length) {
+                console.log(`   ===> Found ${foundEmails.length} user(s) in slack: [${foundEmails}]`);
             }
-            return {userIds, foundUsernames};
+            return {userIds, foundEmails};
         } catch (e) {
             throw 'Slack: ' + e;
         }
     },
 
-    async addSlackUsersToConversation(channelId, channelName, slackUsersNames, slackUsersIds, slackAPiToken) {
-        console.log(`5/6 : Adding slack users [${slackUsersNames}] to slack conversation [${channelName}]`);
+    async addSlackUsersToConversation(channelId, channelName, foundEmails, slackUsersIds, slackAPiToken) {
+        console.log(`5/6 : Adding slack users [${foundEmails}] to slack conversation [${channelName}]`);
         const options = {
             url: 'https://slack.com/api/conversations.invite',
             headers: {
@@ -222,7 +222,7 @@ const SlackHelper = {
             } else if (!json.ok) {
                 throw JSON.stringify(json);
             }
-            console.log(`   ===> Users ${slackUsersNames} added to channel [${channelName}]`);
+            console.log(`   ===> Users ${foundEmails} added to channel [${channelName}]`);
             return json;
         } catch (e) {
             throw 'Slack: ' + e;
