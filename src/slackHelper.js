@@ -63,9 +63,10 @@ const SlackHelper = {
     });
     try {
       const json = await response.json();
+      const channelId = await this.getSlackConversationId(channelName, slackAPiToken);
+      
       if (json.error && json.error.includes('name_taken')) {
-        console.log(`  Channel [${channelName}] already exists`);
-        const channelId = await this.getSlackConversationId(channelName, slackAPiToken);
+        console.log(`  Channel [${channelName}] already exists`);  
         if (!channelId) {
           throw `Slack channel ${channelName} not found!`;
         }
