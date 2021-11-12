@@ -47,7 +47,7 @@ const GithubHelper = {
     try {
       const response = await fetch(url, options);
       const json = await response.json();
-      if (json.message.includes('Bad credentials')) {
+      if (json.message && json.message.includes('Bad credentials')) {
         throw json.message;
       }
       if (json.is_template === undefined || !json.is_template) {
