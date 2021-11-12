@@ -114,6 +114,7 @@ const GithubHelper = {
       }
       if (response.status === 204) {
         console.log(`2/6 [OK] : Collaborator [${githubUsername}] is already a collaborator on repository [${repoName}] on organization [${githubOrganization}] => continuing`);
+        return;
       }
       const json = await response.json();
       throw json.message;
