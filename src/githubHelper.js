@@ -61,7 +61,7 @@ const GithubHelper = {
   // async function to create github repository in organisation based on template
   // use fetch without callback
   async createRepository(githubUsername, githubOrganization, githubTemplate, githubAPiToken) {
-    console.log(`1/5 : Creating repository [${githubUsername}] on organization [${githubOrganization}] using template [${githubTemplate}]`);
+    console.log(`1/6 : Creating repository [${githubUsername}] on organization [${githubOrganization}] using template [${githubTemplate}]`);
     const url = `https://api.github.com/repos/${githubOrganization}/${githubTemplate}/generate`;
     const options = {
       method: 'POST',
@@ -79,12 +79,12 @@ const GithubHelper = {
       const response = await fetch(url, options);
       const json = await response.json();
       if (json.id) {
-        console.log(`1/5 [OK] : Repository [${githubUsername}] successfully created on [${githubOrganization}]`);
+        console.log(`1/6 [OK] : Repository [${githubUsername}] successfully created on [${githubOrganization}]`);
         return;
       }
       if (json.errors && json.errors.length) {
         if (json.errors[0].includes('already exists')) {
-          console.log(`1/5 [OK] : Repository [${githubUsername}] already exists on organization [${githubOrganization}] => continuing`);
+          console.log(`1/6 [OK] : Repository [${githubUsername}] already exists on organization [${githubOrganization}] => continuing`);
           return;
         }
         throw json.error.reduce((acc, cur) => `${acc}\n${cur}`, '');
@@ -97,7 +97,7 @@ const GithubHelper = {
   // async function to add a github username as colaborator to a github repository
   async addCollaboratorToRepo(githubUsername, githubOrganization, githubAPiToken) {
     const repoName = githubUsername;
-    console.log(`2/5 : Adding collaborator [${githubUsername}] to repository [${repoName}] on organization [${githubOrganization}]`);
+    console.log(`2/6 : Adding collaborator [${githubUsername}] to repository [${repoName}] on organization [${githubOrganization}]`);
     const url = `https://api.github.com/repos/${githubOrganization}/${repoName}/collaborators/${githubUsername}`;
     const options = {
       method: 'PUT',
@@ -109,11 +109,11 @@ const GithubHelper = {
     try {
       const response = await fetch(url, options);
       if (response.status === 201) {
-        console.log(`2/5 [OK] : Collaborator [${githubUsername}] successfully invited to repository [${repoName}] on organization [${githubOrganization}]`);
+        console.log(`2/6 [OK] : Collaborator [${githubUsername}] successfully invited to repository [${repoName}] on organization [${githubOrganization}]`);
         return;
       }
       if (response.status === 204) {
-        console.log(`2/5 [OK] : Collaborator [${githubUsername}] is already a collaborator on repository [${repoName}] on organization [${githubOrganization}] => continuing`);
+        console.log(`2/6 [OK] : Collaborator [${githubUsername}] is already a collaborator on repository [${repoName}] on organization [${githubOrganization}] => continuing`);
       }
       const json = await response.json();
       throw json.message;

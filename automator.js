@@ -3,7 +3,7 @@ const config = require('./configuration/config.json');
 /* ========================== Helpers and requirements ============================== */
 const utilities = require('./src/utilities').Utilities;
 const githubHelper = require('./src/githubHelper').GithubHelper;
-//const slackHelper = require('./src/slackHelper').SlackHelper;
+const slackHelper = require('./src/slackHelper').SlackHelper;
 /* ========================== Helpers ============================== */
 
 // main function script
@@ -19,10 +19,10 @@ async function main() {
   utilities.validateConfigJsonParamsAndAPITokens(config, process.env);
   const githubUsername = params.ghuser;
   const slackEmail = params.slackemail;
-  const { githubOrganization } = config;
+  const githubOrganization = config.githubOrganization;
   const githubTemplate = config.githubTemplateName;
-  const slackTeamId = config.slackTeam;
-  const { slackUsersList } = config;
+  const slackTeam = config.slackTeam;
+  const slackUsersList = config.slackUsersList;
   const githubAPiToken = process.env.GH_TOKEN;
   const slackAPiToken = process.env.SLACK_TOKEN;
   try {
@@ -30,9 +30,7 @@ async function main() {
     // eslint-disable-next-line max-len
     await githubHelper.createPrivateRepositoryAndAddCollaborator(githubUsername, githubOrganization, githubTemplate, githubAPiToken);
     // eslint-disable-next-line max-len
-    // temporary
-    process.exit(0);
-    // await slackHelper.createPrivateConversationAndInviteGUestUSer(githubUsername, slackEmail, slackTeamId, slackUsersList, slackAPiToken);
+    await slackHelper.createPrivateConversationAndInviteGUestUSer(githubUsername, slackEmail, slackTeam, slackUsersList, slackAPiToken);
     console.log('Process Finished.')
   } catch (err) {
     console.log('Error: ' + err);
