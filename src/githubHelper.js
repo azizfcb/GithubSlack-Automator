@@ -117,6 +117,12 @@ const GithubHelper = {
         return;
       }
       const json = await response.json();
+      // loop through errors array display its message property
+      if (json.errors && json.errors.length) {
+        json.errors.forEach((error) => {
+          console.log(`2/6 [ERROR] : ${error.message}`);
+        });
+      }
       throw json.message;
     } catch (error) {
       throw 'Github : ' + error;
